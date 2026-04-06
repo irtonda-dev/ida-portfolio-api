@@ -3,9 +3,11 @@ from pydantic import BaseModel, HttpUrl
 from typing import Optional
 from datetime import datetime
 from pathlib import Path
+import os
 
-LOG_DIR = Path(__file__).parent / "logs"
-LOG_DIR.mkdir(exist_ok=True)
+# Logs — uses /app/logs inside Docker (mounted volume), falls back to local ./logs
+LOG_DIR = Path(os.getenv("LOG_DIR", Path(__file__).parent / "logs"))
+LOG_DIR.mkdir(parents=True, exist_ok=True)
 
 app = FastAPI()
 
